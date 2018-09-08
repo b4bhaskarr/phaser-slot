@@ -1,0 +1,117 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser - Making your first game, part 1</title>
+    <script src="assets/js/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="slot-game" style="margin: 0 auto;"> </div>
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 500, Phaser.AUTO, 'slot-game', { preload: preload, create: create, update: update });
+var reel1;
+var reel2;
+var reel3;
+var tween;
+var spinning = false;
+var timer;
+var tick = 0;
+
+function preload() {
+    game.load.image('main_screen', 'assets/screen.png');
+    game.load.image('cave_gate', 'assets/cave_gate.png');
+    
+    game.load.image('icon_1', 'assets/icons/icon_1.png');
+    game.load.image('icon_2', 'assets/icons/icon_2.png');
+    game.load.image('icon_3', 'assets/icons/icon_3.png');
+    game.load.image('icon_4', 'assets/icons/icon_4.png');
+    game.load.image('icon_5', 'assets/icons/icon_5.png');
+    game.load.image('icon_6', 'assets/icons/icon_6.png');
+    game.load.image('icon_7', 'assets/icons/icon_7.png');
+    game.load.image('icon_8', 'assets/icons/icon_8.png');
+    game.load.image('spin_button', 'assets/start_btn.png');   
+    
+}
+
+function create() {
+    //  A simple background for our game
+    game.add.sprite(0, 0, 'main_screen');
+    
+    /*var graphics = this.game.add.graphics();
+    graphics.beginFill(0x000000, 1);
+    this.gamePanel = graphics.drawRect(0, 768, 768, -352);
+    graphics.endFill();
+    this.gamePanel.fixedToCamera = true;*/
+    var items = ['icon_1', 'icon_2', 'icon_7', 'icon_8', 'icon_3', 'icon_4', 'icon_1', 'icon_5', 'icon_6', 'icon_7', 'icon_8', 'icon_2', 'icon_3', 'icon_4', 'icon_7', 'icon_8', 'icon_3', 'icon_4', 'icon_1', 'icon_5', 'icon_6', 'icon_7', 'icon_8', 'icon_2'];
+    reel1 = game.add.group();  
+    reel2 = game.add.group();
+    reel3 = game.add.group();
+    //reel4 = game.add.group();
+    //reel5 = game.add.group();
+    for (var i = 0; i < 5; i++) {
+        sprite = reel1.create(160, i * 88 - 30, items[game.rnd.integerInRange(0, 5)]);
+        sprite2 = reel2.create(340, i * 88 - 30, items[game.rnd.integerInRange(0, 5)]);
+        sprite3 = reel3.create(518, i * 88 - 30, items[game.rnd.integerInRange(0, 5)]);
+        //sprite4 = reel4.create(386, i * 98 + 3, items[game.rnd.integerInRange(0, 5)]);
+        //sprite4 = reel4.create(486, i * 98 + 3, items[game.rnd.integerInRange(0, 5)]);
+    }
+    console.log(sprite);
+    game.add.sprite(0, 0, 'cave_gate');
+    var button = game.add.button(600, 350, 'spin_button', actionOnClick, this);
+    game.stage.backgroundColor = '#000';
+                    timer = game.time.create(false);
+                    timer.loop(3000, updateTicks, this);
+                    timer.start();
+}
+function actionOnClick() {
+                    spinning = true;
+                }
+
+                function update() {
+                    if (spinning) {
+                        reel1.y += 150;
+                        reel2.y += 40;
+                        reel3.y += 57;
+                        //reel4.y += 60;
+                        if (reel1.y >= 400) {
+                            reel1.y = 0;
+                        }
+                        if (reel2.y >= 400) {
+                            reel2.y = 0;
+                        }
+                        if (reel3.y >= 400) {
+                            reel3.y = 0;
+                        }
+                        //if (reel4.y >= 400) {
+                            //reel4.y = 0;
+                        //}
+                    }
+                    var tween = game.add.tween(reel1);
+                    var tween2 = game.add.tween(reel2);
+                    var tween3 = game.add.tween(reel3);
+                    //var tween4 = game.add.tween(reel4);
+                    tween.to({y: 180}, 60);
+                    tween2.to({y: 180}, 70);
+                    tween3.to({y: 180}, 80);
+                    //tween4.to({y: 180}, 90);
+                    tween.start();
+                    tween2.start();
+                    tween3.start();
+                    //tween4.start();
+                }
+                function updateTicks() {
+                    if (spinning) {
+                        spinning = false;
+                    }
+                }
+
+</script>
+
+</body>
+</html>
